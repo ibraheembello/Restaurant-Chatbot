@@ -4,7 +4,8 @@
   "description": "A restaurant chatbot for placing orders with Paystack payment integration",
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-public",
+    "copy-public": "node -e \"require('fs').cpSync('./src/public', './dist/public', {recursive: true})\"",
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts",
     "seed": "node dist/seed/menu.seed.js"
