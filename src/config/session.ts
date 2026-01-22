@@ -19,8 +19,13 @@ export const createSessionConfig = () => {
       secure: isProduction,
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000, // 1 day
-      sameSite: isProduction ? 'strict' : 'lax',
+      sameSite: 'lax', // Changed to 'lax' for better compatibility
     },
     name: 'restaurant.sid',
   });
+};
+
+export const getTrustProxySetting = () => {
+  // Enable trust proxy in production (Render, Railway, etc. use reverse proxies)
+  return process.env.NODE_ENV === 'production' ? 1 : false;
 };

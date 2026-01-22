@@ -7,17 +7,20 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { connectDatabase } from './config/database';
-import { createSessionConfig } from './config/session';
+import { createSessionConfig, getTrustProxySetting } from './config/session';
 import routes from './routes';
 
 // Initialize Express app
 const app: Express = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy for production (Render, Railway use reverse proxies)
+app.set('trust proxy', getTrustProxySetting());
+
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production'
-    ? process.env.BASE_URL
+    ? [process.env.BASE_URL || '', /\.onrender\.com$/]
     : ['http://localhost:3000', 'http://127.0.0.1:3000'],
   credentials: true,
 }));
